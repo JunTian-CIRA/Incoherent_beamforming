@@ -1,0 +1,47 @@
+##############################################################################
+# maali cygnet file for gsl
+##############################################################################
+
+read -r -d '' MAALI_MODULE_WHATIS << EOF
+
+The GNU Scientific Library (GSL) is a numerical library for C and C++
+programmers. It is free software under the GNU General Public License.
+
+The library provides a wide range of mathematical routines such as random
+number generators, special functions and least-squares fitting. There are over
+1000 functions in total with an extensive test suite.
+
+For further information see https://www.gnu.org/software/gsl/
+
+EOF
+
+# specify which compilers we want to build the tool with
+MAALI_TOOL_COMPILERS="gcc/8.3.0"
+
+MAALI_TOOL_CPU_TARGET='cascadelake'
+# URL to download the source code from
+#MAALI_URL="http://mirror.aarnet.edu.au/pub/gnu/gsl/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION.tar.gz"
+MAALI_URL="http://prdownloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
+
+# location we are downloading the source code to
+MAALI_DST="$MAALI_SRC/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION.tar.gz"
+
+# where the unpacked source code is located
+MAALI_TOOL_BUILD_DIR="$MAALI_BUILD_DIR/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION"
+
+# type of tool (eg. apps, devel, python, etc.)
+MAALI_TOOL_TYPE="devel"
+
+# for auto-building module files
+MAALI_MODULE_SET_PATH=1
+MAALI_MODULE_SET_LD_LIBRARY_PATH=1
+MAALI_MODULE_SET_LIBRARY_PATH=1
+MAALI_MODULE_SET_CPATH=1
+MAALI_MODULE_SET_MANPATH=0
+MAALI_MODULE_SET_PKG_CONFIG_PATH=0
+##############################################################################
+
+
+
+
+

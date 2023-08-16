@@ -1,0 +1,56 @@
+##############################################################################
+# maali cygnet file for gsl
+##############################################################################
+
+read -r -d '' MAALI_MODULE_WHATIS << EOF
+
+The GNU Scientific Library (GSL) is a numerical library for C and C++
+programmers. It is free software under the GNU General Public License.
+
+The library provides a wide range of mathematical routines such as random
+number generators, special functions and least-squares fitting. There are over
+1000 functions in total with an extensive test suite.
+
+For further information see https://www.gnu.org/software/gsl/
+
+EOF
+
+# specify which compilers we want to build the tool with
+MAALI_TOOL_COMPILERS="gcc/8.3.0"
+
+MAALI_TOOL_CPU_TARGET='cascadelake'
+# URL to download the source code from
+MAALI_URL="https://github.com/ledatelescope/bifrost/archive/refs/tags/v0.10.0.tar.gz"
+
+# location we are downloading the source code to
+MAALI_DST="$MAALI_SRC/v$MAALI_TOOL_VERSION.tar.gz"
+
+# where the unpacked source code is located
+MAALI_TOOL_BUILD_DIR="$MAALI_BUILD_DIR/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION"
+
+# type of tool (eg. apps, devel, python, etc.)
+MAALI_TOOL_TYPE="devel"
+
+# for auto-building module files
+MAALI_MODULE_SET_PATH=1
+MAALI_MODULE_SET_LD_LIBRARY_PATH=1
+MAALI_MODULE_SET_LIBRARY_PATH=1
+MAALI_MODULE_SET_CPATH=1
+MAALI_MODULE_SET_MANPATH=0
+MAALI_MODULE_SET_PKG_CONFIG_PATH=0
+##############################################################################
+
+MAALI_TOOL_PREREQ="python/3.8.2 ctypesgen/1.1.1 ctags/5.8 astropy/4.0.1.post1 cuda/10.2 numpy/1.18.2 matplotlib/3.2.1 python-dateutil/2.8.1 pytz/2019.3" # python-modules is for astropy
+MAALI_TOOL_BUILD_PREREQ="pip/20.2.4" 
+
+function maali_build {
+  cd "$MAALI_TOOL_BUILD_DIR"
+  export MAALI_CORES=14
+  pip install --user hickle simplejson graphviz contextlib2 pint git+https://github.com/olsonse/ctypesgen.git@9bd2d249aa4011c6383a10890ec6f203d7b7990
+  maali_run "./configure --prefix=$MAALI_INSTALL_DIR --with-python=$MAALI_PYTHON_HOME/bin/python --with-pyinstall-flags=--user"
+  maali_run "make -j$MAALI_CORES all"
+  mkdir -p $MAALI_INSTALL_DIR/lib
+  maali_run "make install"
+}
+
+
